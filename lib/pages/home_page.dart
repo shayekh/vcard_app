@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vcard_app/pages/form_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/';
@@ -10,7 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedIndex =0;
+  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,24 +21,25 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: (){
-
+          onPressed: () {
+            Navigator.pushNamed(context, FormPage.routeName);
           },
           shape: CircleBorder(),
           child: const Icon(Icons.add),
         ),
         bottomNavigationBar: BottomAppBar(
+          padding: EdgeInsets.zero,
           shape: const CircularNotchedRectangle(),
           notchMargin: 10,
           clipBehavior: Clip.antiAlias,
           child: BottomNavigationBar(
-            onTap: (index){
+            onTap: (index) {
               setState(() {
                 selectedIndex = index;
               });
-
             },
             currentIndex: selectedIndex,
+            backgroundColor: Colors.purpleAccent.shade100,
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
