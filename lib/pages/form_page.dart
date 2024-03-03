@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vcard_app/models/contact_model.dart';
+import 'package:vcard_app/providers/contact_provider.dart';
 
 class FormPage extends StatefulWidget {
   static const String routeName = '/form';
@@ -74,10 +77,8 @@ class _FormPageState extends State<FormPage> {
                   }
                   return null;
                 },
-
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4.0),
               child: TextFormField(
@@ -88,11 +89,8 @@ class _FormPageState extends State<FormPage> {
                   labelText: 'Email Address',
                   filled: true,
                 ),
-
-
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4.0),
               child: TextFormField(
@@ -102,10 +100,8 @@ class _FormPageState extends State<FormPage> {
                   labelText: 'Company Name',
                   filled: true,
                 ),
-
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4.0),
               child: TextFormField(
@@ -115,11 +111,8 @@ class _FormPageState extends State<FormPage> {
                   labelText: 'Designation',
                   filled: true,
                 ),
-
-
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4.0),
               child: TextFormField(
@@ -129,10 +122,8 @@ class _FormPageState extends State<FormPage> {
                   labelText: 'Street Address',
                   filled: true,
                 ),
-
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4.0),
               child: TextFormField(
@@ -143,26 +134,33 @@ class _FormPageState extends State<FormPage> {
                   labelText: 'Website',
                   filled: true,
                 ),
-
               ),
             )
-
-
-
-
-
-
           ],
         ),
       ),
     );
   }
 
-  void _saveContact() {
-    if(formKey.currentState!.validate()){
+  void _saveContact() async {
+    if (formKey.currentState!.validate()) {
+      final contact = ContactModel(
+          name: nameController.text,
+          mobile: mobileController.text,
+          email: emailController.text,
+          company: companyController.text,
+          designation: designationController.text,
+          address: addressController.text,
+          website: websiteController.text);
 
+      Provider.of<ContactProvider>(context, listen: false)
+          .insertContactP(contact)
+          .then((rowID) {
+        if (rowID > 0) {
+          Navigator.pop(context);
+        }
+      });
     }
-
   }
 
   @override
