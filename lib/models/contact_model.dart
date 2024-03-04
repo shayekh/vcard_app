@@ -22,6 +22,8 @@ class ContactModel {
   bool favorite;
   String image;
 
+
+
   ContactModel(
       {this.id = -1,
       required this.name,
