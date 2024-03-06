@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vcard_app/models/contact_model.dart';
 import 'package:vcard_app/providers/contact_provider.dart';
+import 'package:vcard_app/utils/helpers.dart';
 
 class FormPage extends StatefulWidget {
   static const String routeName = '/form';
@@ -157,6 +158,7 @@ class _FormPageState extends State<FormPage> {
           .insertContactP(contact)
           .then((rowID) {
         if (rowID > 0) {
+          showMsg(context, 'Saved');
           Navigator.pop(context);
         }
       });
