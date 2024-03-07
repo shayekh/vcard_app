@@ -39,4 +39,9 @@ class DbHelper {
     return db.delete(tableContact, where: '$tableContactColId = ?', whereArgs: [id]);
   }
 
+  Future<int> updateContactField(int id, Map<String,dynamic> map) async{
+    final db = await _open();
+    return db.update(tableContact, map, where: '$tableContactColId = ?', whereArgs: [id]);
+  }
+
 }

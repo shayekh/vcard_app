@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vcard_app/models/contact_model.dart';
 import 'package:vcard_app/pages/form_page.dart';
 import 'package:vcard_app/utils/helpers.dart';
 
@@ -96,7 +97,9 @@ class _HomePageState extends State<HomePage> {
                 child: ListTile(
                   title: Text(contact.name),
                   trailing: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                     provider.updateContactFieldP(contact,tableContactColFavorite);
+                    },
                     icon: Icon(contact.favorite
                         ? Icons.favorite
                         : Icons.favorite_border),
