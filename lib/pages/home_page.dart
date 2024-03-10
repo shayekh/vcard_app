@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vcard_app/models/contact_model.dart';
+import 'package:vcard_app/pages/contact_details_page.dart';
 import 'package:vcard_app/pages/form_page.dart';
 import 'package:vcard_app/utils/helpers.dart';
 
@@ -95,6 +96,7 @@ class _HomePageState extends State<HomePage> {
                   showMsg(context, 'Deleted');
                 },
                 child: ListTile(
+                  onTap: () => Navigator.pushNamed(context, ContactDetailsPage.routeName, arguments: contact.id) ,
                   title: Text(contact.name),
                   trailing: IconButton(
                     onPressed: () {

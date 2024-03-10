@@ -28,11 +28,18 @@ class DbHelper {
     return db.insert(tableContact, contactModel.toMap());
   }
 
-  Future<List<ContactModel>> getAllContacts() async{
+  Future <List<ContactModel>> getAllContacts() async{
     final db = await _open();
     final mapList = await db.query(tableContact);
     return List.generate(mapList.length, (index) => ContactModel.fromMap(mapList[index]));
   }
+
+  Future<ContactModel> getContactById(int id) async{
+    final db = await _open();
+    final mapList = await db.query(tableContact, where: '$tableContactColId = ?', whereArgs: [id]);
+    return ContactModel.fromMap(mapList.first);
+  }
+
 
   Future<int> deleteContact(int id) async{
     final db = await _open();
