@@ -51,6 +51,9 @@ class _ScanPageState extends State<ScanPage> {
                 label: const Text('Capture'),
               )
             ],
+          ),
+          Wrap(
+            children: lines.map((line) => Chip(label: Text(line))).toList(),
           )
         ],
       ),
@@ -76,6 +79,7 @@ class _ScanPageState extends State<ScanPage> {
         lines = tempList;
         isScanOver = true;
       });
+      print(lines);
     }
   }
 }
