@@ -52,6 +52,7 @@ class _ScanPageState extends State<ScanPage> {
               )
             ],
           ),
+
           Wrap(
             // children: lines.map((line) => Chip(label: Text(line))).toList(),
             children: lines.map((line) => LineItem(line: line)).toList(),
@@ -82,6 +83,61 @@ class _ScanPageState extends State<ScanPage> {
       });
       print(lines);
     }
+  }
+}
+
+class DropTargetItem extends StatefulWidget {
+  final String property;
+  final Function(String, String) onDrop;
+
+  const DropTargetItem(
+      {super.key, required this.property, required this.onDrop});
+
+  @override
+  State<DropTargetItem> createState() => _DropTargetItemState();
+}
+
+class _DropTargetItemState extends State<DropTargetItem> {
+  String dragItem = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(widget.property),
+        DragTarget<String>(
+          builder: (context, candidateData, rejectedData) => Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              border: candidateData.isNotEmpty
+                  ? Border.all(color: Colors.red, width: 2)
+                  : null,
+            ),
+            child: Row(
+              children: [
+                Text(dragItem.isEmpty ? 'Drop Here' : dragItem),
+                if (dragItem.isNotEmpty)
+                  const Icon(
+                    Icons.clear,
+                    size: 15,
+                  ),
+              ],
+            ),
+          ),
+          onAccept: (value){
+            setState(() {
+              if(dragItem.isEmpty){
+                dragItem = value;
+              } else{
+                dragItem += ' $value';
+              }
+            });
+
+            widget.onDrop(widget.property, dragItem);
+          },
+        )
+      ],
+    );
   }
 }
 
