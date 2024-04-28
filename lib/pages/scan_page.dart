@@ -52,7 +52,6 @@ class _ScanPageState extends State<ScanPage> {
               )
             ],
           ),
-
           Wrap(
             // children: lines.map((line) => Chip(label: Text(line))).toList(),
             children: lines.map((line) => LineItem(line: line)).toList(),
@@ -124,11 +123,11 @@ class _DropTargetItemState extends State<DropTargetItem> {
               ],
             ),
           ),
-          onAccept: (value){
+          onAccept: (value) {
             setState(() {
-              if(dragItem.isEmpty){
+              if (dragItem.isEmpty) {
                 dragItem = value;
-              } else{
+              } else {
                 dragItem += ' $value';
               }
             });
@@ -155,7 +154,7 @@ class LineItem extends StatelessWidget {
       feedback: Container(
         key: _globalKey,
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.black45,
         ),
         child: Text(line,
