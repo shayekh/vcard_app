@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vcard_app/utils/constants.dart';
 
 class ScanPage extends StatefulWidget {
   static const String routeName = '/scan';
@@ -52,6 +53,38 @@ class _ScanPageState extends State<ScanPage> {
               )
             ],
           ),
+          if (isScanOver)
+            Card(
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    DropTargetItem(
+                        property: ContactProperties.name,
+                        onDrop: _getPropertyValue),
+                    DropTargetItem(
+                        property: ContactProperties.designation,
+                        onDrop: _getPropertyValue),
+                    DropTargetItem(
+                        property: ContactProperties.company,
+                        onDrop: _getPropertyValue),
+                    DropTargetItem(
+                        property: ContactProperties.address,
+                        onDrop: _getPropertyValue),
+                    DropTargetItem(
+                        property: ContactProperties.email,
+                        onDrop: _getPropertyValue),
+                    DropTargetItem(
+                        property: ContactProperties.mobile,
+                        onDrop: _getPropertyValue),
+                    DropTargetItem(
+                        property: ContactProperties.website,
+                        onDrop: _getPropertyValue)
+                  ],
+                ),
+              ),
+            ),
           Wrap(
             // children: lines.map((line) => Chip(label: Text(line))).toList(),
             children: lines.map((line) => LineItem(line: line)).toList(),
@@ -83,6 +116,8 @@ class _ScanPageState extends State<ScanPage> {
       print(lines);
     }
   }
+
+  _getPropertyValue(String property, String value) {}
 }
 
 class DropTargetItem extends StatefulWidget {
@@ -103,37 +138,48 @@ class _DropTargetItemState extends State<DropTargetItem> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(widget.property),
-        DragTarget<String>(
-          builder: (context, candidateData, rejectedData) => Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              border: candidateData.isNotEmpty
-                  ? Border.all(color: Colors.red, width: 2)
-                  : null,
+        Expanded(flex: 1, child: Text(widget.property)),
+        Expanded(
+          flex: 2,
+          child: DragTarget<String>(
+            builder: (context, candidateData, rejectedData) => Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                border: candidateData.isNotEmpty
+                    ? Border.all(color: Colors.red, width: 2)
+                    : null,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Text(dragItem.isEmpty ? 'Drop Here' : dragItem)),
+                  if (dragItem.isNotEmpty)
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          dragItem = '';
+                        });
+                      },
+                      child: const Icon(
+                        Icons.clear,
+                        size: 15,
+                      ),
+                    ),
+                ],
+              ),
             ),
-            child: Row(
-              children: [
-                Text(dragItem.isEmpty ? 'Drop Here' : dragItem),
-                if (dragItem.isNotEmpty)
-                  const Icon(
-                    Icons.clear,
-                    size: 15,
-                  ),
-              ],
-            ),
-          ),
-          onAccept: (value) {
-            setState(() {
-              if (dragItem.isEmpty) {
-                dragItem = value;
-              } else {
-                dragItem += ' $value';
-              }
-            });
+            onAccept: (value) {
+              setState(() {
+                if (dragItem.isEmpty) {
+                  dragItem = value;
+                } else {
+                  dragItem += ' $value';
+                }
+              });
 
-            widget.onDrop(widget.property, dragItem);
-          },
+              widget.onDrop(widget.property, dragItem);
+            },
+          ),
         )
       ],
     );
